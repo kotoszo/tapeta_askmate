@@ -37,9 +37,3 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    '''
-    encoded = base64.b64encode("This is something, you wont read again.".encode())
-    print(encoded)
-    decoded = base64.b64decode(encoded.decode())
-    print(decoded)
-    '''

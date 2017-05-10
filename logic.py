@@ -23,9 +23,9 @@ def sort_table():
 
 def b64_convert(text, mode=1):
     if mode == 1:
-        result = base64.b64encode(text.encode())
+        result = base64.b64encode(text.encode("utf-8"))
     elif mode == 2:
-        result = base64.b64decode(text.decode())
+        result = base64.b64decode(text).decode("utf-8")
     else:
         raise ValueError
     return result
@@ -36,16 +36,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # print(display_questions())
-    text12 = b64_convert(b64_convert("Legyen fasza string!"), mode=2)
-    with open("proba.csv", 'w', encoding='utf-8') as f:
-        f.write(str(text12))
-
-
-
-
-
-
-
-
-
