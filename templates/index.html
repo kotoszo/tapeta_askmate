@@ -22,6 +22,7 @@
                 <form id="create-question" action="/new-question" method="GET">
                     <a href="/new-question" id="create-question-button" class="btn btn-success">Ask a new Question!</a>
                 </form>
+                {% if display %}
                 <div class="table-responsive">
                     <table id="questions-table" class="table table-bordred table-striped table-responsive">
                         <thead>
@@ -54,10 +55,15 @@
                                     </form>
                                 </td>
                             </tr>
-                            {% endfor %}
+                            {% endfor %} {% else %}
+                            <div class="no-questions">
+                                <h2>Don't have any question to display.</h2>
+                                <h3> Press the 'Ask a new question!' button above to add a question!</h3>
+                            </div>
                         </tbody>
                     </table>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
