@@ -15,6 +15,17 @@
 /*-----------------------------------*\
 	1 - TABLE
 \*-----------------------------------*/
+#questions-table {
+    word-wrap: break-word;
+}
+
+#questions-table td {
+    max-width: 300px;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #ececec;
+}
 
 
 
