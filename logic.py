@@ -6,21 +6,38 @@ import time
 
 
 def display_questions():
-    result = []
     questions = file_io.read_from_file(config.questions)
     if len(questions):
         questions = sorted(questions, key=lambda x: -int(x[1]))
-        for line in questions:
-            result = [[line[0], date_convert(line[1]), line[2], line[3], b64_convert(line[4]),
-                      file_io.change_eol(b64_convert(line[5]))] for line in questions]
+        result = format_questions(questions)
     else:
         result = False
-
     return result
 
 
 def display_question(id):
-    pass
+    questions = file_io.read_from_file(config.questions)
+    question_to_show = [line for line in questions if int(line[0]) == int(id)]
+    if len(question_to_show):
+        answers = file_io.read_from_file(config.answers)
+        answers = [line for line in answers if int(line[3]) == int(id)]
+        answers = sorted(answers, key=lambda x: -int(x[1]))
+        result = {'question': format_questions(question_to_show), 'answers': format_answers(answers)}
+    else:
+        result = False
+    return result
+
+
+def format_questions(questions):
+    result = [[line[0], date_convert(line[1]), line[2], line[3], b64_convert(line[4]),
+              file_io.change_eol(b64_convert(line[5])), b64_convert(line[6])] for line in questions]
+    return result
+
+
+def format_answers(answers):
+    result = [[line[0], date_convert(line[1]), line[2], file_io.change_eol(b64_convert(line[4])), b64_convert(line[5])]
+              for line in answers]
+    return result
 
 
 def sort_table():
@@ -52,11 +69,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    print(display_questions())
-    '''
-    dt = date_convert(1284101485, mode=2)
-    print(dt)
-    dt2 = date_convert(dt, mode=1)
-    print(dt2)
-    '''
-
