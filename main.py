@@ -28,8 +28,8 @@ def question():
     return render_template('question.html', question=questions, answer=answers)
 
 
-@app.route('/')
-@app.route('/list', methods=['GET'])
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/list', methods=['GET', 'POST'])
 def index():
     display = logic.display_questions()
     return render_template('index.html', display=display)
