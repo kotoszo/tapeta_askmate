@@ -28,28 +28,61 @@ def display_question(id):
     return result
 
 
-def format_questions(questions):
-    result = [[line[0], date_convert(line[1]), line[2], line[3], b64_convert(line[4]),
-              file_io.change_eol(b64_convert(line[5])), b64_convert(line[6])] for line in questions]
+def format_questions(questions, mode='frontend'):
+    '''
+    Formats questions
+    '''
+    if mode == 'frontend':
+        result = [[line[0], date_convert(line[1]), line[2], line[3], b64_convert(line[4]),
+                  file_io.change_eol(b64_convert(line[5])), b64_convert(line[6])] for line in questions]
+    elif mode == 'backend':
+        result = [[line[0], date_convert(line[1], decode=True), line[2], line[3], b64_convert(line[4], decode=True),
+                  file_io.change_eol(b64_convert(line[5], decode=True), mode=1), b64_convert(line[6], decode=True)]
+                  for line in questions]
+    else:
+        raise ValueError
     return result
 
 
-def format_answers(answers):
-    result = [[line[0], date_convert(line[1]), line[2], file_io.change_eol(b64_convert(line[4])), b64_convert(line[5])]
-              for line in answers]
+def format_answers(answers, mode='frontend'):
+    '''
+    Formats answers
+    '''
+    if mode == 'frontend':
+        result = [[line[0], date_convert(line[1]), line[2], file_io.change_eol(b64_convert(line[4])),
+                  b64_convert(line[5])] for line in answers]
+    elif mode == 'backend':
+        result = [[line[0], date_convert(line[1], decode=True), line[2], line[3],
+                  file_io.change_eol(b64_convert(line[4], decode=True), mode=1), b64_convert(line[5], decode=True)]
+                  for line in answers]
+    else:
+        raise ValueError
     return result
 
 
-def question_insert_update(form_data):
+def process_insert_update(form_data, questions=True):
     '''
     Handle insert and update requests.
         @param    form_data   POST      Values provided by user.
+        @param    questions   boolean   True if processing questions, False if answers
         @return               boolean   True if process is successful, otherwise False
     '''
-    table = file_io.read_from_file(config.questions)
-    #### CHANGE FIELD NAMES!!!!!!!!!!!!!!!!!
-    names = ['modID', 'storyTitle', 'userStory', 'criteria', 'businessValue', 'estimation', 'status']
+    if questions is True:
+        # questions
+        table = file_io.read_from_file(config.questions)
+        #### CHANGE FIELD NAMES!!!!!!!!!!!!!!!!!
+        names = ['modID', 'storyTitle', 'userStory', 'criteria', 'businessValue', 'estimation', 'status']
+    elif questions is False:
+        # answers
+        table = file_io.read_from_file(config.answers)
+        #### CHANGE FIELD NAMES!!!!!!!!!!!!!!!!!
+        names = ['modID', 'storyTitle', 'userStory', 'criteria', 'businessValue', 'estimation', 'status']
+    else:
+        raise ValueError
+
+    form_data['submission_time'] = int(time.time())
     mod_record = [form_data[name] for name in names]
+    mod_record = format_questions(mod_record) if questions else format_answers(mod_record)
 
     if int(form_data['modID']) == -1:
         # insert
