@@ -31,13 +31,15 @@ def question():
 @app.route('/')
 @app.route('/list', methods=['GET'])
 def index():
-    display = logic.display_question()
+    display = logic.display_questions()
     return render_template('index.html', display=display)
 
 
 if __name__ == '__main__':
-    # app.run(debug=True)
+    app.run(debug=True)
+    '''
     encoded = base64.b64encode("This is something, you wont read again.".encode())
     print(encoded)
     decoded = base64.b64decode(encoded.decode())
     print(decoded)
+    '''

@@ -38,6 +38,9 @@ if __name__ == '__main__':
     main()
     # print(display_questions())
     text12 = b64_convert(b64_convert("Legyen fasza string!"), mode=2)
+    with open("proba.csv", 'w', encoding='utf-8') as f:
+        f.write(str(text12))
+
 
 
 
