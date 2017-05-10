@@ -40,7 +40,11 @@ def format_answers(answers):
     return result
 
 
-def sort_table():
+def sort_table(table):
+    pass
+
+
+def file_upload():
     pass
 
 
