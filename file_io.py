@@ -1,6 +1,6 @@
 
 
-def read_from_file(file_name, separator=';'):
+def read_from_file(file_name, separator=','):
     '''
     Read file content and return it as list of lines.
         @param    file_name    string    The name of the file to be read from.
@@ -12,7 +12,7 @@ def read_from_file(file_name, separator=';'):
     return data
 
 
-def write_to_file(what, file_name, separator=';'):
+def write_to_file(what, file_name, separator=','):
     '''
     Write one or multiple lines to file
         @param    what         list      List of lines(!)
