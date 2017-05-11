@@ -19,65 +19,55 @@
         <div class="row">
             <div class="col-md-12">
                 {% if theme == "new-answer" %}
-                    <h1>Create an answer</h1>
-                    <form action="/new-answer" method="POST">
+                <h1>Create an answer</h1>
+                <form action="/new-answer" method="POST" enctype="multipart/form-data">
                     <div class="md-form">
+                        <label for="answer-title" class="">Title:</label></br>
                         <input type="text" id="answer-title" name="answer-title" class="form-control">
-                        <label for="answer-title" class="">Title:</label>
                     </div>
                     <div class="md-form">
-                        <textarea type="text" id="answer-message" name="answer-message" class="md-textarea"></textarea>
-                        <label for="answer-message">Message:</label>
+                        <label for="answer-message">Message:</label></br>
+                        <textarea type="text" id="answer-message" name="answer-message" class="form-control"></textarea>
                     </div>
-                    <div class="file-field">
-                        <div class="btn btn-primary btn-sm">
-                            <span>Upload an image:</span>
-                            <input type="file" id="answer-upload" name="answer-upload">
-                        </div>
-                        <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text" placeholder="Upload your image">
-                        </div>
+                    <div class="md-form file-field">
+                        <label for="file-upload">Upload Image - jpg, jpeg, png, gif, svg</label>
+                        <input name="file-upload" multiple type="file" class="file file-loading" data-allowed-file-extensions='["jpg", "jpeg", "png", "gif", "svg"]'>
                     </div>
                     <button class="btn btn-primary" type="submit">Submit</button>
                 </form>
                 {% elif theme == "new-question" %}
-                    <h1>Create a question</h1>
-                    <form action="/new-question" method="POST">
+                <h1>Create a question</h1>
+                <form action="/new-question" method="POST" enctype="multipart/form-data">
                     <div class="md-form">
+                        <label for="question-title" class="">Title:</label></br>
                         <input type="text" id="question-title" name="question-title" class="form-control">
-                        <label for="question-title" class="">Title:</label>
                     </div>
                     <div class="md-form">
-                        <textarea type="text" id="question-message" name="question-message" class="md-textarea"></textarea>
-                        <label for="question-message">Message:</label>
+                        <label for="question-message">Message:</label></br>
+                        <textarea type="text" id="question-message" name="question-message" class="form-control"></textarea>
                     </div>
-                    <div class="file-field">
-                        <div class="btn btn-primary btn-sm">
-                            <span>Upload an image:</span>
-                            <input type="file" id="question-upload" name="question-upload">
-                        </div>
-                        <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text" placeholder="Upload your image">
-                        </div>
+                    <div class="md-form file-field">
+                        <label for="file-upload">Upload Image - jpg, jpeg, png, gif, svg</label>
+                        <input name="file-upload" multiple type="file" class="file file-loading" data-allowed-file-extensions='["jpg", "jpeg", "png", "gif", "svg"]'>
                     </div>
                     <button class="btn btn-primary" type="submit">Submit</button>
                 </form>
                 {% elif theme == "answer" %}
-                    <h1>Edit an answer</h1>
-                    <form action="">
+                <h1>Edit an answer</h1>
+                <form action="/" method="POST">
                     <div>
-                    <textarea type="text">{{ answers[question_id|int][4] }}</textarea>
+                        <textarea type="text">{{ answers[question_id|int][4] }}</textarea>
                     </div>
                     <button>Submit</button>
-                    </form>
+                </form>
                 {% elif theme == "question" %}
-                    <h1>Edit a question</h1>
-                    <form action="">
+                <h1>Edit a question</h1>
+                <form action="/" method="POST">
                     <div>
-                    <textarea type="text">{{ question[question_id|int][4] }}</textarea>
+                        <textarea type="text">{{ question[question_id|int][4] }}</textarea>
                     </div>
                     <button>Submit</button>
-                    </form>
+                </form>
                 {% endif %}
                 </form>
             </div>
