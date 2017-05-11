@@ -49,10 +49,10 @@ def format_questions(questions, mode='frontend'):
     '''
     if mode == 'frontend':
         result = [[line[0], date_convert(line[1]), line[2], line[3], b64_convert(line[4]),
-                  file_io.change_eol(b64_convert(line[5])), b64_convert(line[6])] for line in questions]
+                  b64_convert(line[5]), b64_convert(line[6])] for line in questions]
     elif mode == 'backend':
         result = [[line[0], date_convert(line[1], decode=True), line[2], line[3], b64_convert(line[4], decode=True),
-                  file_io.change_eol(b64_convert(line[5], decode=True), mode=1), b64_convert(line[6], decode=True)]
+                  b64_convert(line[5], decode=True), b64_convert(line[6], decode=True)]
                   for line in questions]
     else:
         raise ValueError
@@ -64,11 +64,11 @@ def format_answers(answers, mode='frontend'):
     Formats answers
     '''
     if mode == 'frontend':
-        result = [[line[0], date_convert(line[1]), line[2], file_io.change_eol(b64_convert(line[4])),
+        result = [[line[0], date_convert(line[1]), line[2], b64_convert(line[4]),
                   b64_convert(line[5])] for line in answers]
     elif mode == 'backend':
         result = [[line[0], date_convert(line[1], decode=True), line[2], line[3],
-                  file_io.change_eol(b64_convert(line[4], decode=True), mode=1), b64_convert(line[5], decode=True)]
+                  b64_convert(line[4], decode=True), b64_convert(line[5], decode=True)]
                   for line in answers]
     else:
         raise ValueError
@@ -90,8 +90,7 @@ def process_insert_update(form_data):
                 status = True
         else:
             # update
-            # update_question(form_data)
-            pass
+            update_question(form_data)
     elif int(form_data['typeID']) == 1:
         # answers
         if int(form_data['modID']) == -1:
@@ -108,35 +107,28 @@ def process_insert_update(form_data):
 
 
 def insert_question(form_data):
+    status = False
     table = file_io.read_from_file(config.questions)
-    mod_record = [form_data['modID'], int(time.time()), 0, 0, b64_convert(form_data['title'], decode=True),
-                  file_io.change_eol(b64_convert(form_data['description']), mode=1),
-                  b64_convert(form_data['file_upload'], decode=True)]
+    mod_record = [form_data['modID'], str(int(time.time())), '0', '0', b64_convert(form_data['title'], decode=True),
+                  b64_convert(form_data['description'], decode=True), '']
     mod_record[0] = str(int(table[len(table) - 1][0]) + 1) if table else 1
     table.append(mod_record)
-    status = True if fileio.write_to_file(table, config.questions) else False
+    status = True if file_io.write_to_file(table, config.questions) else False
     return status
 
 
-    '''
+def update_question(form_data):
+    status = False
     table = file_io.read_from_file(config.questions)
-
-    mod_record = format_questions(mod_record) if questions else format_answers(mod_record)
-
-    if int(form_data['modID']) == -1:
-        # insert
-        mod_record[0] = str(int(table[len(table) - 1][0]) + 1) if table else 1
-        table.append(mod_record)
-        updated_table = table
-    else:
-        # update
-        updated_table = [record for record in table if record[0] != mod_record[0]]
-        updated_table.append(mod_record)
-        updated_table = sorted(updated_table, key=lambda x: int(x[0]))
-
-    status = True if fileio.write_to_file(updated_table, config.questions) else False
+    to_be_updated = [line for line in table if int(form_data['modID']) == int(line[0])][0]
+    to_be_updated[1] = str(int(time.time()))
+    to_be_updated[4] = b64_convert(form_data['title'], decode=True)
+    to_be_updated[5] = b64_convert(form_data['description'], decode=True)
+    updated_table = [line for line in table if int(form_data['modID']) != int(line[0])]
+    updated_table.append(to_be_updated)
+    updated_table = sorted(updated_table, key=lambda x: int(x[0]))
+    status = True if file_io.write_to_file(updated_table, config.questions) else False
     return status
-    '''
 
 
 def process_delete(id, questions=True):
@@ -215,7 +207,7 @@ def file_upload():
 
 def b64_convert(text, decode=False):
     if decode is True:
-        result = base64.b64encode(text.encode("utf-8"))
+        result = base64.b64encode(bytearray(text, encoding="utf-8")).decode("utf-8")
     elif decode is False:
         result = base64.b64decode(text).decode("utf-8")
     else:

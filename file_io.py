@@ -20,7 +20,6 @@ def write_to_file(what, file_name, separator=','):
         @param    separator    string    The separator used in the file.
         @return                boolean   True if process is successful, otherwise False.
     '''
-    what = [[change_eol(data) for data in line] for line in what]
     data = list(map(lambda x: x + '\n', [separator.join([str(item) for item in line]) for line in what]))
 
     try:

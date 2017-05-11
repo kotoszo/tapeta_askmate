@@ -1,3 +1,19 @@
-{{ question["answers"][answer_id|int][3] }}
+'''
+    table = file_io.read_from_file(config.questions)
 
-{{ question['question'][4] }}
+    mod_record = format_questions(mod_record) if questions else format_answers(mod_record)
+
+    if int(form_data['modID']) == -1:
+        # insert
+        mod_record[0] = str(int(table[len(table) - 1][0]) + 1) if table else 1
+        table.append(mod_record)
+        updated_table = table
+    else:
+        # update
+        updated_table = [record for record in table if record[0] != mod_record[0]]
+        updated_table.append(mod_record)
+        updated_table = sorted(updated_table, key=lambda x: int(x[0]))
+
+    status = True if fileio.write_to_file(updated_table, config.questions) else False
+    return status
+    '''
