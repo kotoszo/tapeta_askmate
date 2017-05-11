@@ -18,33 +18,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-
-
-                <h1>Edit / Create a Question</h1>
-                <form action="/new-question" method="POST">
-                    <div class="md-form">
-                        <input type="text" id="question-title" name="question-title" class="form-control">
-                        <label for="question-title" class="">Title:</label>
-                    </div>
-                    <div class="md-form">
-                        <textarea type="text" id="question-message" name="question-message" class="md-textarea"></textarea>
-                        <label for="question-message">Message:</label>
-                    </div>
-                    <div class="file-field">
-                        <div class="btn btn-primary btn-sm">
-                            <span>Upload an image:</span>
-                            <input type="file" id="question-upload" name="question-upload">
-                        </div>
-                        <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text" placeholder="Upload your image">
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" type="submit">Submit</button>
-                </form>
-
-
-                <h1>Edit / Create an Answer</h1>
-                <form action="/new-answer" method="POST">
+                {% if theme == "new-answer" %}
+                    <h1>Create an answer</h1>
+                    <form action="/new-answer" method="POST">
                     <div class="md-form">
                         <input type="text" id="answer-title" name="answer-title" class="form-control">
                         <label for="answer-title" class="">Title:</label>
@@ -64,8 +40,46 @@
                     </div>
                     <button class="btn btn-primary" type="submit">Submit</button>
                 </form>
-
-
+                {% elif theme == "new-question" %}
+                    <h1>Create a question</h1>
+                    <form action="/new-question" method="POST">
+                    <div class="md-form">
+                        <input type="text" id="question-title" name="question-title" class="form-control">
+                        <label for="question-title" class="">Title:</label>
+                    </div>
+                    <div class="md-form">
+                        <textarea type="text" id="question-message" name="question-message" class="md-textarea"></textarea>
+                        <label for="question-message">Message:</label>
+                    </div>
+                    <div class="file-field">
+                        <div class="btn btn-primary btn-sm">
+                            <span>Upload an image:</span>
+                            <input type="file" id="question-upload" name="question-upload">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text" placeholder="Upload your image">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </form>
+                {% elif theme == "answer" %}
+                    <h1>Edit an answer</h1>
+                    <form action="">
+                    <div>
+                    <textarea type="text">{{ answers[question_id|int][4] }}</textarea>
+                    </div>
+                    <button>Submit</button>
+                    </form>
+                {% elif theme == "question" %}
+                    <h1>Edit a question</h1>
+                    <form action="">
+                    <div>
+                    <textarea type="text">{{ question[question_id|int][4] }}</textarea>
+                    </div>
+                    <button>Submit</button>
+                    </form>
+                {% endif %}
+                </form>
             </div>
         </div>
     </div>
