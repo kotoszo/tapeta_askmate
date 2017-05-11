@@ -23,16 +23,6 @@ def question(question_id):
     questions = logic.display_question(question_id)
     return render_template("question.html", questions=questions)
 
-'''
-@app.route('/<theme>', methods=['GET', 'POST'])
-@app.route('/<theme>/<question_id>/edit', methods=['GET', 'POST'])
-def form(question_id=None, theme=None):
-    display = logic.display_questions()
-    if question_id is not None:
-        answered = logic.display_question(question_id)
-    return render_template('form.html', theme=theme, question=display, question_id=question_id, answered=answered)
-'''
-
 
 @app.route('/new-question', methods=['GET', 'POST'])
 @app.route('/question/<int:question_id>/edit', methods=['GET', 'POST'])
@@ -55,7 +45,7 @@ def show_answer_form(answer_id=None, question_id=None):
     else:
         data = None
         theme = 'new-answer'
-    return render_template('form.html', theme=theme, question=data)
+    return render_template('form.html', theme=theme, question=data, question_id=question_id)
 
 
 @app.errorhandler(404)

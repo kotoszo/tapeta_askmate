@@ -40,6 +40,7 @@ def get_question_by_answer_id(answer_id):
     questions_table = file_io.read_from_file(config.questions)
     question = [line for line in questions_table if int(answer[0][3]) == int(line[0])]
     result = {'question': format_questions(question), 'answers': format_answers(answer)}
+    print(result, sys.stderr)
     return result
 
 
@@ -89,45 +90,72 @@ def process_insert_update(form_data):
             if insert_question(form_data):
                 status = True
         else:
-            # update
-            update_question(form_data)
+            if update_question(form_data):
+                status = True
     elif int(form_data['typeID']) == 1:
         # answers
         if int(form_data['modID']) == -1:
-            # insert
-            # insert_answer(form_data)
-            pass
+            if insert_answer(form_data):
+                status = True
         else:
-            # update
-            # update_answer(form_data)
-            pass
+            if update_answer(form_data):
+                status = True
     else:
         raise ValueError
     return status
 
 
 def insert_question(form_data):
-    status = False
     table = file_io.read_from_file(config.questions)
+
     mod_record = [form_data['modID'], str(int(time.time())), '0', '0', b64_convert(form_data['title'], decode=True),
                   b64_convert(form_data['description'], decode=True), '']
     mod_record[0] = str(int(table[len(table) - 1][0]) + 1) if table else 1
+
     table.append(mod_record)
     status = True if file_io.write_to_file(table, config.questions) else False
     return status
 
 
 def update_question(form_data):
-    status = False
     table = file_io.read_from_file(config.questions)
+
     to_be_updated = [line for line in table if int(form_data['modID']) == int(line[0])][0]
     to_be_updated[1] = str(int(time.time()))
     to_be_updated[4] = b64_convert(form_data['title'], decode=True)
     to_be_updated[5] = b64_convert(form_data['description'], decode=True)
+
     updated_table = [line for line in table if int(form_data['modID']) != int(line[0])]
     updated_table.append(to_be_updated)
     updated_table = sorted(updated_table, key=lambda x: int(x[0]))
+
     status = True if file_io.write_to_file(updated_table, config.questions) else False
+    return status
+
+
+def insert_answer(form_data):
+    table = file_io.read_from_file(config.answers)
+    mod_record = [form_data['modID'], str(int(time.time())), '0', form_data['questionID'],
+                  b64_convert(form_data['description'], decode=True), '']
+    mod_record[0] = str(int(table[len(table) - 1][0]) + 1) if table else 1
+    table.append(mod_record)
+
+    status = True if file_io.write_to_file(table, config.answers) else False
+    return status
+
+
+def update_answer(form_data):
+    table = file_io.read_from_file(config.answers)
+
+    to_be_updated = [line for line in table if int(form_data['modID']) == int(line[0])][0]
+    to_be_updated[1] = str(int(time.time()))
+    to_be_updated[4] = b64_convert(form_data['description'], decode=True)
+
+    updated_table = [line for line in table if int(form_data['modID']) != int(line[0])]
+    updated_table.append(to_be_updated)
+    updated_table = sorted(updated_table, key=lambda x: int(x[0]))
+
+    status = True if file_io.write_to_file(updated_table, config.answers) else False
     return status
 
 
@@ -141,21 +169,21 @@ def process_delete(id, questions=True):
     status = False
     if id:
         if questions is True:
-            table = fileio.read_from_file(config.questions)
+            table = file_io.read_from_file(config.questions)
         elif questions is False:
-            table = fileio.read_from_file(config.answers)
+            table = file_io.read_from_file(config.answers)
         else:
             raise ValueError
 
         # delete record with primary key
         updated_table = [line for line in table if int(line[0]) != int(id)]
-        status = True if fileio.write_to_file(
+        status = True if file_io.write_to_file(
                                               updated_table,
                                               config.questions if questions else config.answers
                                               ) else False
         # delete record(s) with foreign key (cascading delete if deleting questions)
         if questions:
-            table_answers = fileio.read_from_file(config.answers)
+            table_answers = file_io.read_from_file(config.answers)
             updated_answers = [line for line in table_answers if int(line[3]) != int(id)]
             status_answers = True if file_io.write_to_file(updated_answers, config.answers) else False
             status = all(status, status_answers)
@@ -171,14 +199,14 @@ def process_votes(id, questions=True, direction='up'):
 
         if questions is True:
             # questions
-            table = fileio.read_from_file(config.questions)
+            table = file_io.read_from_file(config.questions)
             updated_record = [[line[0], line[1], line[2],
                               str(int(line[3]) + 1) if direction == 'up' else str(int(line[3]) - 1),
                               line[4], line[5], line[6]] for line in table if int(id) == int(line[0])]
             updated_table = [line for line in table if int(id) != int(line[0])]
         elif questions is False:
             # answers
-            table = fileio.read_from_file(config.answers)
+            table = file_io.read_from_file(config.answers)
             updated_record = [[line[0], line[1],
                               str(int(line[2]) + 1) if direction == 'up' else str(int(line[2]) - 1),
                               line[3], line[4], line[5]] for line in table if int(id) == int(line[0])]
