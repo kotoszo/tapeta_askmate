@@ -135,7 +135,6 @@ def process_delete(id, questions=True):
                                               updated_table,
                                               config.questions if questions else config.answers
                                               ) else False
-
         # delete record(s) with foreign key (cascading delete if deleting questions)
         if questions:
             table_answers = fileio.read_from_file(config.answers)

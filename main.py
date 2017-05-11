@@ -40,9 +40,9 @@ def show_question_form(question_id=None):
     return render_template('form.html', theme=theme, question=data)
 
 
-@app.route('/new-answer', methods=['GET', 'POST'])
+@app.route('/question/<int:question_id>/new-answer', methods=['GET', 'POST'])
 @app.route('/answer/<int:answer_id>/edit', methods=['GET', 'POST'])
-def show_answer_form(answer_id=None):
+def show_answer_form(answer_id=None, question_id=None):
     if answer_id:
         theme = 'answer'
         data = logic.get_question_by_answer_id(answer_id)
