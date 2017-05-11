@@ -42,31 +42,46 @@
                         <label for="question-title" class="">Title:</label></br>
                         <input type="text" id="question-title" name="question-title" class="form-control">
                     </div>
-                    <div class="md-form">
-                        <label for="question-message">Message:</label></br>
-                        <textarea type="text" id="question-message" name="question-message" class="form-control"></textarea>
-                    </div>
-                    <div class="md-form file-field">
-                        <label for="file-upload">Upload Image - jpg, jpeg, png, gif, svg</label>
-                        <input name="file-upload" multiple type="file" class="file file-loading" data-allowed-file-extensions='["jpg", "jpeg", "png", "gif", "svg"]'>
-                    </div>
+                        <div class="md-form">
+                            <label for="question-message">Message:</label></br>
+                            <textarea type="text" id="question-message" name="question-message" class="form-control"></textarea>
+                        </div>
+                        <div class="md-form file-field">
+                            <label for="file-upload">Upload Image - jpg, jpeg, png, gif, svg</label>
+                            <input name="file-upload" multiple type="file" class="file file-loading" data-allowed-file-extensions='["jpg", "jpeg", "png", "gif", "svg"]'>
+                        </div>
                     <button class="btn btn-primary" type="submit">Submit</button>
                 </form>
                 {% elif theme == "answer" %}
                 <h1>Edit an answer</h1>
+                <h2>{{ question[question_id|int][4] }}</h2>
                 <form action="/" method="POST">
-                    <div>
-                        <textarea type="text">{{ answers[question_id|int][4] }}</textarea>
-                    </div>
-                    <button>Submit</button>
+                        <div class="md-form">
+                            <label for="question-message">Message:</label></br>
+                            <textarea type="text" id="textarea">{{ answered["answers"][answer_id|int][3] }}</textarea>
+                        </div>
+                        <div class="md-form file-field">
+                            <label for="file-upload">Upload Image - jpg, jpeg, png, gif, svg</label>
+                            <input name="file-upload" multiple type="file" class="file file-loading" data-allowed-file-extensions='["jpg", "jpeg", "png", "gif", "svg"]'>
+                        </div>
+                    <button class="btn btn-primary" type="submit">Submit</button>
                 </form>
                 {% elif theme == "question" %}
                 <h1>Edit a question</h1>
                 <form action="/" method="POST">
-                    <div>
-                        <textarea type="text">{{ question[question_id|int][4] }}</textarea>
+                    <div class="md-form">
+                        <label for="question-title" class="">Title:</label></br>
+                        <input type="text" id="question-title" name="question-title" class="form-control" value="{{ question[question_id|int][4] }}">
                     </div>
-                    <button>Submit</button>
+                        <div class="md-form">
+                            <label for="question-message">Message:</label></br>
+                            <textarea type="text" id="textarea">{{ question[question_id|int][5]|replace("<br />", "\n") }}</textarea>
+                        </div>
+                        <div class="md-form file-field">
+                            <label for="file-upload">Upload Image - jpg, jpeg, png, gif, svg</label>
+                            <input name="file-upload" multiple type="file" class="file file-loading" data-allowed-file-extensions='["jpg", "jpeg", "png", "gif", "svg"]'>
+                        </div>
+                    <button class="btn btn-primary" type="submit">Submit</button>
                 </form>
                 {% endif %}
                 </form>
