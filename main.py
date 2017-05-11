@@ -12,10 +12,12 @@ def base():
 
 
 @app.route('/<theme>', methods=['GET', 'POST'])
-@app.route('/<theme>/<item_id>/edit', methods=['GET', 'POST'])
-def form(question_id=None, answer_id=None, theme=None, item_id=None):
+@app.route('/<theme>/<question_id>/edit', methods=['GET', 'POST'])
+def form(question_id=None, theme=None):
     display = logic.display_questions()
-    return render_template('form.html', theme=theme, question=display, answer_id=answer_id, question_id=question_id, item_id=item_id)
+    if question_id != None:
+        answered = logic.display_question(question_id)
+    return render_template('form.html', theme=theme, question=display, question_id=question_id, answered=answered)
 
 
 @app.route('/question/<question_id>')
