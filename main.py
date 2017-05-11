@@ -30,13 +30,25 @@ def form(question_id=None, theme=None):
 
 @app.route('/new-question', methods=['GET', 'POST'])
 @app.route('/question/<int:question_id>/edit', methods=['GET', 'POST'])
-def show_form(question_id=None):
+def show_question_form(question_id=None):
     if question_id:
         theme = 'question'
         data = logic.display_question(question_id, answers=False)
     else:
         data = None
         theme = 'new-question'
+    return render_template('form.html', theme=theme, question=data)
+
+
+@app.route('/new-answer', methods=['GET', 'POST'])
+@app.route('/answer/<int:answer_id>/edit', methods=['GET', 'POST'])
+def show_answer_form(answer_id=None):
+    if answer_id:
+        theme = 'answer'
+        data = logic.display_question(question_id, answers=False)
+    else:
+        data = None
+        theme = 'new-answer'
     return render_template('form.html', theme=theme, question=data)
 
 
