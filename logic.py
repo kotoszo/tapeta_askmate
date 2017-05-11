@@ -33,6 +33,15 @@ def display_question(id, answers=True):
     return result
 
 
+def get_question_by_answer_id(answer_id):
+    answers_table = file_io.read_from_file(config.answers)
+    answer = [line for line in answers_table if int(answer_id) == int(line[0])]
+    questions_table = file_io.read_from_file(config.questions)
+    question = [line for line in questions_table if int(answer[0][3]) == int(line[0])]
+    result = {'question': format_questions(question), 'answers': format_answers(answer)}
+    return result
+
+
 def format_questions(questions, mode='frontend'):
     '''
     Formats questions
@@ -204,3 +213,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    print(get_question_by_answer_id(2))

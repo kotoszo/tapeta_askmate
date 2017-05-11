@@ -45,7 +45,7 @@ def show_question_form(question_id=None):
 def show_answer_form(answer_id=None):
     if answer_id:
         theme = 'answer'
-        data = logic.display_question(question_id, answers=False)
+        data = logic.get_question_by_answer_id(answer_id)
     else:
         data = None
         theme = 'new-answer'
