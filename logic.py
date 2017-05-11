@@ -99,6 +99,39 @@ def process_insert_update(form_data, questions=True):
     return status
 
 
+def process_delete(id, questions=True):
+    '''
+    Handle delete requests.
+        @param    id          int       The id to be deleted.
+        @param    questions   boolean   True if processing questions, False if answers
+        @return               boolean   True if process is successful, otherwise False
+    '''
+    status = False
+    if id:
+        if questions is True:
+            table = fileio.read_from_file(config.questions)
+        elif questions is False:
+            table = fileio.read_from_file(config.answers)
+        else:
+            raise ValueError
+
+        # delete record with primary key
+        updated_table = [line for line in table if int(line[0]) != int(id)]
+        status = True if fileio.write_to_file(
+                                              updated_table,
+                                              config.questions if questions else config.answers
+                                              ) else False
+
+        # delete record(s) with foreign key (cascading delete if deleting questions)
+        if questions:
+            table_answers = fileio.read_from_file(config.answers)
+            updated_answers = [line for line in table_answers if int(line[3]) != int(id)]
+            status_answers = True if file_io.write_to_file(updated_answers, config.answers) else False
+            status = all(status, status_answers)
+
+    return status
+
+
 def sort_table(table):
     pass
 
