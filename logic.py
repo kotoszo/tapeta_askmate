@@ -141,9 +141,9 @@ def process_votes(id, questions=True, direction='up'):
         if questions is True:
             # questions
             table = fileio.read_from_file(config.questions)
-            updated_record = [line[0], line[1], line[2],
+            updated_record = [[line[0], line[1], line[2],
                               str(int(line[3]) + 1) if direction == 'up' else str(int(line[3]) - 1),
-                              line[4], line[5], line[6] for line in table if int(id) == int(line[0])]
+                              line[4], line[5], line[6]] for line in table if int(id) == int(line[0])]
             updated_table = [line for line in table if int(id) != int(line[0])]
         elif questions is False:
             # answers
