@@ -18,7 +18,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <a href="question/{{ questions['question'][0][0] }}/new-answer" id="create-answer-button" class="btn btn-success">Reply with an FANSzőr!</a>
+                <a href="/question/{{ questions['question'][0][0] }}/new-answer" id="create-answer-button" class="btn btn-success">Reply with an FANSzőr!</a>
                 <h1>{{ questions["question"][0][4] }}</h1>
                 <p>{{ questions["question"][0][5]|replace("<br />", "\n") }}</p>
                 <img src='/static/{{ questions["question"][0][6] }}' alt="Uploaded Image">
