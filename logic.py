@@ -15,14 +15,19 @@ def display_questions():
     return result
 
 
-def display_question(id):
+def display_question(id, answers=True):
     questions = file_io.read_from_file(config.questions)
     question_to_show = [line for line in questions if int(line[0]) == int(id)]
     if len(question_to_show):
-        answers = file_io.read_from_file(config.answers)
-        answers = [line for line in answers if int(line[3]) == int(id)]
-        answers = sorted(answers, key=lambda x: -int(x[1]))
-        result = {'question': format_questions(question_to_show), 'answers': format_answers(answers)}
+        if answers is True:
+            answers = file_io.read_from_file(config.answers)
+            answers = [line for line in answers if int(line[3]) == int(id)]
+            answers = sorted(answers, key=lambda x: -int(x[1]))
+            result = {'question': format_questions(question_to_show), 'answers': format_answers(answers)}
+        elif answers is False:
+            result = {'question': format_questions(question_to_show)}
+        else:
+            raise ValueError
     else:
         result = False
     return result
