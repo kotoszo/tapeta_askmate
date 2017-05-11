@@ -19,7 +19,7 @@ body {
 body {
     font-family: 'Open Sans', sans-serif;
 }
-#body_index h1 {
+.askmate {
   color: #000;
   font-size: 75px;
   font-weight: 400;
@@ -33,10 +33,20 @@ body {
   text-align: center;
 }
 
-#body_index p {
+#title-text-question {
+    font-family: 'VT323', monospace;
+    font-size: 50px !important;
+    letter-spacing: 3px !important;
+}
+
+.askmate-desc {
     text-align: center;
     font-style: italic;
     color: #000;
+}
+
+#create-question {
+    text-align: center;
 }
 
 .no-questions {
@@ -56,9 +66,32 @@ body {
 /*-----------------------------------*\
 	1 - TABLE
 \*-----------------------------------*/
+.table-form {
+    width: 100%;
+    box-shadow: 3px 3px 3px;
+}
+.table-form td {
+    padding: 20px 15px;
+}
+table.table-form a {
+    float: right;
+}
+span.glyphicon.glyphicon-pencil {
+    padding-left: 25px;
+}
 table {
     background: #fff;
 }
+
+#questions-table tr:hover {
+    background-color: lightcoral;
+    transparent: 0.7;
+}
+
+#questions-table tr:hover td {
+    background-color: transparent; /* or #000 */
+}
+
 #questions-table {
     border: 3px solid brown;
     margin-top: 10px;
