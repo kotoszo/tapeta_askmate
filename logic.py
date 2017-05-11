@@ -3,6 +3,7 @@ import config
 import base64
 import datetime
 import time
+import sys
 
 
 def display_questions():
@@ -74,28 +75,52 @@ def format_answers(answers, mode='frontend'):
     return result
 
 
-def process_insert_update(form_data, questions=True):
+def process_insert_update(form_data):
     '''
     Handle insert and update requests.
         @param    form_data   POST      Values provided by user.
         @param    questions   boolean   True if processing questions, False if answers
         @return               boolean   True if process is successful, otherwise False
     '''
-    if questions is True:
+    status = False
+    if int(form_data['typeID']) == 0:
         # questions
-        table = file_io.read_from_file(config.questions)
-        #### CHANGE FIELD NAMES!!!!!!!!!!!!!!!!!
-        names = ['modID', 'storyTitle', 'userStory', 'criteria', 'businessValue', 'estimation', 'status']
-    elif questions is False:
+        if int(form_data['modID']) == -1:
+            if insert_question(form_data):
+                status = True
+        else:
+            # update
+            # update_question(form_data)
+            pass
+    elif int(form_data['typeID']) == 1:
         # answers
-        table = file_io.read_from_file(config.answers)
-        #### CHANGE FIELD NAMES!!!!!!!!!!!!!!!!!
-        names = ['modID', 'storyTitle', 'userStory', 'criteria', 'businessValue', 'estimation', 'status']
+        if int(form_data['modID']) == -1:
+            # insert
+            # insert_answer(form_data)
+            pass
+        else:
+            # update
+            # update_answer(form_data)
+            pass
     else:
         raise ValueError
+    return status
 
-    form_data['submission_time'] = int(time.time())
-    mod_record = [form_data[name] for name in names]
+
+def insert_question(form_data):
+    table = file_io.read_from_file(config.questions)
+    mod_record = [form_data['modID'], int(time.time()), 0, 0, b64_convert(form_data['title'], decode=True),
+                  file_io.change_eol(b64_convert(form_data['description']), mode=1),
+                  b64_convert(form_data['file_upload'], decode=True)]
+    mod_record[0] = str(int(table[len(table) - 1][0]) + 1) if table else 1
+    table.append(mod_record)
+    status = True if fileio.write_to_file(table, config.questions) else False
+    return status
+
+
+    '''
+    table = file_io.read_from_file(config.questions)
+
     mod_record = format_questions(mod_record) if questions else format_answers(mod_record)
 
     if int(form_data['modID']) == -1:
@@ -111,6 +136,7 @@ def process_insert_update(form_data, questions=True):
 
     status = True if fileio.write_to_file(updated_table, config.questions) else False
     return status
+    '''
 
 
 def process_delete(id, questions=True):
@@ -212,4 +238,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    print(get_question_by_answer_id(2))

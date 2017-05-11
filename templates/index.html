@@ -1,34 +1,19 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
-    <meta charset="utf-8">
-    <title>AskMate - Index</title>
-    <meta name="author" content="">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% block title %} - {% if question %} Edit {% else -%} Add new {% endif %} Record{% endblock %}
 
+{% block content %}
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700&amp;subset=latin-ext" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=VT323&amp;subset=latin-ext" rel="stylesheet">
-
-
-    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/static/css/bootstrap.css" rel="stylesheet">
-    <link href="/static/css/bootstrap-theme.css" rel="stylesheet">
-    <link href="/static/css/style.css" rel="stylesheet">
-</head>
-
-<body id="body_index">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1>AskMate</h1>
-                <p>AskMate is a crowdsourced Q & A site where peaople can easily ask and answer to help each other.</p>
+                <h2>AskMate</h2>
+                <p>AskMate is a crowdsourced Q&#38;A site where peaople can easily ask and answer to help each other.</p>
                 <form id="create-question" action="/new-question" method="GET">
                     <a href="/new-question" id="create-question-button" class="btn btn-success">Ask a new Question!</a>
                 </form>
+                <br />
+                <h2>Questions</h2>
                 {% if display %}
                 <div class="table-responsive">
                     <table id="questions-table" class="table table-bordred table-striped table-responsive">
@@ -71,6 +56,5 @@
             </div>
         </div>
     </div>
-</body>
 
-</html>
+{%- endblock content %}

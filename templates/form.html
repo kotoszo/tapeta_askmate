@@ -1,93 +1,47 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
-    <meta charset="utf-8">
-    <title>AskMate - Form</title>
-    <meta name="author" content="">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% block title %} - 
+    {% if question %} Edit {% else -%} Add new {% endif %}
+    {% if theme == "new-answer" or theme == "answer" %} Answer {% else -%} Question {% endif %}
+{% endblock %}
 
-    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/static/css/bootstrap.css" rel="stylesheet">
-    <link href="/static/css/bootstrap-theme.css" rel="stylesheet">
-    <link href="/static/css/style.css" rel="stylesheet">
-</head>
-
-<body id="body_form">
+{% block content %}
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                {% if theme == "new-answer" %}
-                <h1>Create an answer</h1>
-                <form action="/new-answer" method="POST" enctype="multipart/form-data">
-                    <div class="md-form">
-                        <label for="answer-title" class="">Title:</label></br>
-                        <input type="text" id="answer-title" name="answer-title" class="form-control">
-                    </div>
-                    <div class="md-form">
-                        <label for="answer-message">Message:</label></br>
-                        <textarea type="text" id="answer-message" name="answer-message" class="form-control"></textarea>
-                    </div>
-                    <div class="md-form file-field">
-                        <label for="file-upload">Upload Image - jpg, jpeg, png, gif, svg</label>
-                        <input name="file-upload" multiple type="file" class="file file-loading" data-allowed-file-extensions='["jpg", "jpeg", "png", "gif", "svg"]'>
-                    </div>
-                    <button class="btn btn-primary" type="submit">Submit</button>
-                </form>
-                {% elif theme == "new-question" %}
-                <h1>Create a question</h1>
-                <form action="/" method="POST" enctype="multipart/form-data">
-                    <div class="md-form">
-                        <label for="question-title" class="">Title:</label></br>
-                        <input type="text" id="question-title" name="question-title" class="form-control">
-                    </div>
-                    <div class="md-form">
-                        <label for="question-message">Message:</label></br>
-                        <textarea type="text" id="question-message" name="question-message" class="form-control"></textarea>
-                    </div>
-                    <div class="md-form file-field">
-                        <label for="file-upload">Upload Image - jpg, jpeg, png, gif, svg</label>
-                        <input name="file-upload" multiple type="file" class="file file-loading" data-allowed-file-extensions='["jpg", "jpeg", "png", "gif", "svg"]'>
-                    </div>
-                    <button class="btn btn-primary" type="submit">Submit</button>
-                </form>
-                {% elif theme == "answer" %}
-                <h1>Edit an answer</h1>
-                <h2>{{ question['question'][4] }}</h2>
+                <h1>{% if theme == "new-answer" %}
+                        Create an answer
+                    {% elif theme == "new-question" %}
+                        Create a question
+                    {% elif theme == "answer" %}
+                        Edit an answer
+                    {% elif theme == "question" %}
+                        Edit a question
+                    {% endif %}
+                </h1>
                 <form action="/" method="POST">
-                    <div class="md-form">
-                        <label for="question-message">Message:</label></br>
-                        <textarea type="text" id="textarea">{{ question["answers"][answer_id|int][3] }}</textarea>
+                    <div>
+                        <input type="hidden" id="modID" name="modID" value="{% if question %}{{ question['question'][0] }}{% else %}-1{% endif %}" />
                     </div>
-                    <div class="md-form file-field">
-                        <label for="file-upload">Upload Image - jpg, jpeg, png, gif, svg</label>
+                    <div>
+                        <input type="hidden" id="typeID" name="typeID" value="{% if theme == 'new-question' or theme == 'question' %}0{% else %}1{% endif %}" />
+                    </div>
+                    <div class="md-form">
+                        <label for="question-title">Title:</label></br>
+                        <input type="text" id="question-title" name="title">
+                    </div>
+                    <div>
+                        <label for="question-message">Description:</label></br>
+                        <textarea type="text" id="textarea" name="description"></textarea>
+                    </div>
+                    <div>
+                        <label for="file-upload">Upload Image - Allowed formats: jpg, jpeg, png, gif, svg</label>
                         <input name="file-upload" multiple type="file" class="file file-loading" data-allowed-file-extensions='["jpg", "jpeg", "png", "gif", "svg"]'>
                     </div>
+                    <br />
                     <button class="btn btn-primary" type="submit">Submit</button>
                 </form>
-                {% elif theme == "question" %}
-                <h1>Edit a question</h1>
-                <form action="/" method="POST">
-                    <div class="md-form">
-                        <label for="question-title" class="">Title:</label></br>
-                        <input type="text" id="question-title" name="question-title" class="form-control" value="{{ question['question'][4] }}">
-                    </div>
-                    <div class="md-form">
-                        <label for="question-message">Message:</label></br>
-                        <textarea type="text" id="textarea" class="form-control">{{ question['question'][5] }}</textarea>
-                    </div>
-                    <div class="md-form file-field">
-                        <label for="file-upload">Upload Image - jpg, jpeg, png, gif, svg</label>
-                        <input name="file-upload" multiple type="file" class="file file-loading" data-allowed-file-extensions='["jpg", "jpeg", "png", "gif", "svg"]'>
-                    </div>
-                    <button class="btn btn-primary" type="submit">Submit</button>
-                </form>
-                {% endif %}
             </div>
         </div>
     </div>
-
-</body>
-
-</html>
+{%- endblock content %}
