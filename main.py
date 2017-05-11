@@ -29,11 +29,11 @@ def form(question_id=None, theme=None):
 
 
 @app.route('/new-question', methods=['GET', 'POST'])
-@app.route('/question/<int:question_id>/edit')
+@app.route('/question/<int:question_id>/edit', methods=['GET', 'POST'])
 def show_form(question_id=None):
     if question_id:
         theme = 'question'
-        data = ''
+        data = logic.display_question(question_id, answers=False)
     else:
         data = None
         theme = 'new-question'

@@ -25,7 +25,7 @@ def display_question(id, answers=True):
             answers = sorted(answers, key=lambda x: -int(x[1]))
             result = {'question': format_questions(question_to_show), 'answers': format_answers(answers)}
         elif answers is False:
-            result = {'question': format_questions(question_to_show)}
+            result = {'question': format_questions(question_to_show)[0]}
         else:
             raise ValueError
     else:

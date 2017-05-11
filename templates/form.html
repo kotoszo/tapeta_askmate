@@ -54,7 +54,7 @@
                 </form>
                 {% elif theme == "answer" %}
                 <h1>Edit an answer</h1>
-                <h2>{{ question[question_id|int][4] }}</h2>
+                <h2>{{ question['question'][4] }}</h2>
                 <form action="/" method="POST">
                         <div class="md-form">
                             <label for="question-message">Message:</label></br>
@@ -71,11 +71,11 @@
                 <form action="/" method="POST">
                     <div class="md-form">
                         <label for="question-title" class="">Title:</label></br>
-                        <input type="text" id="question-title" name="question-title" class="form-control" value="{{ question[question_id|int][4] }}">
+                        <input type="text" id="question-title" name="question-title" class="form-control" value="{{ question['question'][4] }}">
                     </div>
                         <div class="md-form">
                             <label for="question-message">Message:</label></br>
-                            <textarea type="text" id="textarea">{{ question[question_id|int][5]|replace("<br />", "\n") }}</textarea>
+                            <textarea type="text" id="textarea">{{ question['question'][5] }}</textarea>
                         </div>
                         <div class="md-form file-field">
                             <label for="file-upload">Upload Image - jpg, jpeg, png, gif, svg</label>
