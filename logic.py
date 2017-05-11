@@ -132,6 +132,40 @@ def process_delete(id, questions=True):
     return status
 
 
+def process_votes(id, questions=True, direction='up'):
+    status = False
+    if id:
+        if direction not in ('up', 'down'):
+            raise ValueError
+
+        if questions is True:
+            # questions
+            table = fileio.read_from_file(config.questions)
+            updated_record = [line[0], line[1], line[2],
+                              str(int(line[3]) + 1) if direction == 'up' else str(int(line[3]) - 1),
+                              line[4], line[5], line[6] for line in table if int(id) == int(line[0])]
+            updated_table = [line for line in table if int(id) != int(line[0])]
+        elif questions is False:
+            # answers
+            table = fileio.read_from_file(config.answers)
+            updated_record = [line[0], line[1],
+                              str(int(line[2]) + 1) if direction == 'up' else str(int(line[2]) - 1),
+                              line[3], line[4], line[5] for line in table if int(id) == int(line[0])]
+            updated_table = [line for line in table if int(id) != int(line[0])]
+        else:
+            raise ValueError
+
+        updated_table.append(updated_record)
+        updated_table = sorted(updated_table, key=lambda x: int(x[0]))
+        status = True if file_io.write_to_file(updated_table,
+                                               config.questions if questions else config.answers) else False
+    return status
+
+
+def process_view_number():
+    pass
+
+
 def sort_table(table):
     pass
 
