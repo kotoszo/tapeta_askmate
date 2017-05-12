@@ -127,7 +127,27 @@ thead th {
     background: firebrick;
     color: white;
 }
+.arrows {
+    float: left;
+    max-width: 25px;
+}
 
+.arrows a {
+    padding: 0 10px;
+    font-size: 20px;
+}
+
+.arrows .glyphicon-chevron-up {
+    color: green
+}
+.arrows .glyphicon-chevron-up:hover {
+    color: lightgreen
+}
+
+span.vote-num {
+    color: red;
+    font-size: 18px;
+}
 /*-----------------------------------*\
 	1 - FORMS + BUTTONS
 \*-----------------------------------*/

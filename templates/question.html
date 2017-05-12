@@ -8,9 +8,9 @@
             <table class="table-form">
                 <tr>
                     <td>
-                        <span>{{ questions['question'][0][3] }}</span>
+                        <span class="vote-num">{{ questions['question'][0][3] }}</span>
                     </td>
-                    <td>
+                    <td class="arrows">
                         <a href="/question/{{ questions['question'][0][0] }}/vote-up"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
                         <a href="/question/{{ questions['question'][0][0] }}/vote-down"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></a>
                     </td>
@@ -33,9 +33,9 @@
             <table class="table-form">
                 <tr>
                     <td>
-                        <span>{{ item[2] }}</span>
+                        <span class="vote-num">{{ item[2] }}</span>
                     </td>
-                    <td>
+                    <td class="arrows">
                         <a href="/answer/{{ item[0] }}/vote-up"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
                         <a href="/answer/{{ item[0] }}/vote-down"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></a>
                     </td>
