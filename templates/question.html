@@ -4,15 +4,15 @@
 <div id="body-question" class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>{{ questions["question"][0][4] }}</h1>
+            <h1 class="title-text-question">{{ questions["question"][0][4] }}</h1>
             <table class="table-form">
                 <tr>
                     <td>
                         <span>{{ questions['question'][0][3] }}</span>
                     </td>
                     <td>
-                        <a href="/question/{{ questions['question'][0][0] }}/vote-up"></a>
-                        <a href="/question/{{ questions['question'][0][0] }}/vote-down"></a>
+                        <a href="/question/{{ questions['question'][0][0] }}/vote-up"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
+                        <a href="/question/{{ questions['question'][0][0] }}/vote-down"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></a>
                     </td>
                     <td>{{ questions["question"][0][5]|safe }}</td>
                     <td>
@@ -36,8 +36,8 @@
                         <span>{{ item[2] }}</span>
                     </td>
                     <td>
-                        <a href="/answer/{{ item[0] }}/vote-up"></a>
-                        <a href="/answer/{{ item[0] }}/vote-down"></a>
+                        <a href="/answer/{{ item[0] }}/vote-up"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
+                        <a href="/answer/{{ item[0] }}/vote-down"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></a>
                     </td>
                     <td>{{ item[3]|safe }}</td>
                     <td>
