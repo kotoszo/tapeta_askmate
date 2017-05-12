@@ -22,7 +22,7 @@
             </table>
             <br />
             <a href="/question/{{ questions['question'][0][0] }}/new-answer" id="create-answer-button" class="btn btn-success">Add an answer</a>            {% if questions["answers"] %} {% for item in questions["answers"] %}
-            <h3>Answer #{{ loop.index }}</h3>
+            <h3 class="title-text-question">Answer #{{ loop.index }}</h3>
             <table class="table-form">
                 <tr>
                     <td>{{ item[3]|safe }}</td>
@@ -40,7 +40,7 @@
             </table>
             {% endfor %} {% else %}
             <div>
-                <h1>No answers for this quesion yet.</h1>
+                <h1 class="title-text-question">No answers for this quesion yet.</h1>
             </div>
             {% endif %}
         </div>

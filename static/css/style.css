@@ -9,6 +9,8 @@
 /*-----------------------------------*\
 	1 - MAIN
 \*-----------------------------------*/
+
+
 body {
   /* BG pattern*/
   background-color: #d84047;
@@ -18,6 +20,13 @@ body {
 
 body {
     font-family: 'Open Sans', sans-serif;
+}
+
+img.logo {
+    max-width: 100px;
+    height: auto;
+    display: block;
+    position: absolute;
 }
 .askmate {
   color: #000;
@@ -33,7 +42,7 @@ body {
   text-align: center;
 }
 
-#title-text-question {
+.title-text-question {
     font-family: 'VT323', monospace;
     font-size: 50px !important;
     letter-spacing: 3px !important;

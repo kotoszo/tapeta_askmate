@@ -3,7 +3,7 @@ or theme == "answer" %} Answer {% else -%} Question {% endif %} {% endblock %} {
 <div id="body-form" class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>{% if theme == "new-answer" %} Create an answer {% elif theme == "new-question" %} Create a question {% elif
+            <h1 class="title-text-question">{% if theme == "new-answer" %} Create an answer {% elif theme == "new-question" %} Create a question {% elif
                 theme == "answer" %} Edit an answer {% elif theme == "question" %} Edit a question {% endif %}
             </h1>
             <form action="/" method="POST" enctype='multipart/form-data'>
@@ -17,14 +17,13 @@ or theme == "answer" %} Answer {% else -%} Question {% endif %} {% endblock %} {
                 </div>
                 {% if question_id %}
                 <div>
-                    <input type="hidden" id="questionID" name="questionID" value="{{ question_id }}"
-                    />
+                    <input type="hidden" id="questionID" name="questionID" value="{{ question_id }}" />
                 </div>
-                {% endif %}
-                {% if theme == "question" or theme == "new-question" %}
+                {% endif %} {% if theme == "question" or theme == "new-question" %}
                 <div class="md-form">
                     <label for="question-title">Title:</label></br>
-                    <input type="text" id="question-title" class="form-control" name="title" value="{% if theme == "question" %}{{ question['question'][4] }}{% endif %}">
+                    <input type="text" id="question-title" class="form-control" name="title" value="{% if theme == " question
+                        " %}{{ question['question'][4] }}{% endif %}">
                 </div>
                 {% endif %}
                 <div>
