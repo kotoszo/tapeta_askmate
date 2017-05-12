@@ -27,6 +27,7 @@ img.logo {
     height: auto;
     display: block;
     position: absolute;
+    right: 0;
 }
 .askmate {
   color: #000;
@@ -41,7 +42,6 @@ img.logo {
   letter-spacing: 3px;
   text-align: center;
 }
-
 .title-text-question {
     font-family: 'VT323', monospace;
     font-size: 50px !important;
@@ -71,6 +71,15 @@ img.logo {
     text-decoration:none;
     color: #000;
 
+}
+
+#questions-table tr td:nth-child(1),
+#questions-table tr td:nth-child(2),
+#questions-table tr td:nth-child(3),
+#questions-table tr td:nth-child(4),
+#questions-table tr td:nth-child(7),
+#questions-table tr td:nth-child(8) {
+    text-align: center;
 }
 /*-----------------------------------*\
 	1 - TABLE
