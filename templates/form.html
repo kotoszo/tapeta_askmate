@@ -22,8 +22,7 @@ or theme == "answer" %} Answer {% else -%} Question {% endif %} {% endblock %} {
                 {% endif %} {% if theme == "question" or theme == "new-question" %}
                 <div class="md-form">
                     <label for="question-title">Title:</label></br>
-                    <input type="text" id="question-title" class="form-control" name="title" value="{% if theme == " question
-                        " %}{{ question['question'][4] }}{% endif %}">
+                    <input type="text" id="question-title" class="form-control" name="title" value="{% if theme == 'question' %}{{ question['question'][4] }}{% endif %}">
                 </div>
                 {% endif %}
                 <div>
