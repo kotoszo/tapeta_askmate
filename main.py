@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, url_for
+from flask import Flask, request, render_template, url_for, redirect
 import config
 import logic
 import sys
@@ -12,6 +12,10 @@ app = Flask(__name__)
 def index():
     error = None
     if request.method == 'POST':
+        if len(request.form.get('description', 0)) < 10 and int(request.form.get('typeID')) == 0:
+            return redirect(url_for('show_question_form'))
+        if len(request.form.get('description', 0)) < 10 and int(request.form.get('typeID')) == 1:
+            return redirect(url_for('show_answer_form', question_id=request.form.get('questionID')))
         if not logic.process_insert_update(request.form):
             error = 'An error occured while updating the database!'
     display = logic.display_questions()
@@ -20,6 +24,10 @@ def index():
 
 @app.route('/question/<int:question_id>')
 def question(question_id):
+    try:
+        logic.update_view_number(question_id)
+    except IndexError:
+        pass
     questions = logic.display_question(question_id)
     return render_template("question.html", questions=questions)
 
@@ -46,6 +54,29 @@ def show_answer_form(answer_id=None, question_id=None):
         data = None
         theme = 'new-answer'
     return render_template('form.html', theme=theme, question=data, question_id=question_id)
+
+
+@app.route("/answer/<int:answer_id>/delete")
+def delete_answer(answer_id):
+    logic.process_delete(answer_id, questions=False)
+    return redirect(url_for('index'))
+
+
+@app.route("/question/<int:question_id>/delete")
+def delete_question(question_id):
+    logic.process_delete(question_id, questions=True)
+    return redirect(url_for('index'))
+
+
+@app.route("/answer/<answer_id>/vote-<direction>")
+@app.route("/question/<question_id>/vote-<direction>")
+def vote(direction, question_id=None, answer_id=None):
+    if question_id:
+        logic.process_votes(question_id, questions=True, direction=direction)
+    elif answer_id:
+        logic.process_votes(answer_id, questions=False, direction=direction)
+        question_id = get_question_by_answer_id(answer_id)['question'][0]
+    return redirect(url_for('question', question_id=question_id))
 
 
 @app.errorhandler(404)

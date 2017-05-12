@@ -4,6 +4,8 @@ import base64
 import datetime
 import time
 import sys
+import os
+from flask import request
 
 
 def display_questions():
@@ -40,7 +42,6 @@ def get_question_by_answer_id(answer_id):
     questions_table = file_io.read_from_file(config.questions)
     question = [line for line in questions_table if int(answer[0][3]) == int(line[0])]
     result = {'question': format_questions(question), 'answers': format_answers(answer)}
-    print(result, sys.stderr)
     return result
 
 
@@ -87,6 +88,8 @@ def process_insert_update(form_data):
     if int(form_data['typeID']) == 0:
         # questions
         if int(form_data['modID']) == -1:
+            if len(form_data['description']) < 10:
+                return False
             if insert_question(form_data):
                 status = True
         else:
@@ -95,6 +98,8 @@ def process_insert_update(form_data):
     elif int(form_data['typeID']) == 1:
         # answers
         if int(form_data['modID']) == -1:
+            if len(form_data['description']) < 10:
+                return False
             if insert_answer(form_data):
                 status = True
         else:
@@ -109,9 +114,13 @@ def insert_question(form_data):
     table = file_io.read_from_file(config.questions)
 
     mod_record = [form_data['modID'], str(int(time.time())), '0', '0', b64_convert(form_data['title'], decode=True),
-                  b64_convert(form_data['description'], decode=True), '']
+                  b64_convert(form_data['description'], decode=True)]
     mod_record[0] = str(int(table[len(table) - 1][0]) + 1) if table else 1
-
+    if image_upload(form_data, mod_record[0]):
+        image = b64_convert(str(mod_record[0]) + '_' + form_data['file-upload'], decode=True)
+    else:
+        image = ''
+    mod_record.append(image)
     table.append(mod_record)
     status = True if file_io.write_to_file(table, config.questions) else False
     return status
@@ -125,6 +134,11 @@ def update_question(form_data):
     to_be_updated[4] = b64_convert(form_data['title'], decode=True)
     to_be_updated[5] = b64_convert(form_data['description'], decode=True)
 
+    if image_upload(form_data, to_be_updated[0]):
+        to_be_updated[6] = b64_convert(str(to_be_updated[0]) + '_' + form_data['file-upload'], decode=True)
+    else:
+        to_be_updated[6] = ''
+
     updated_table = [line for line in table if int(form_data['modID']) != int(line[0])]
     updated_table.append(to_be_updated)
     updated_table = sorted(updated_table, key=lambda x: int(x[0]))
@@ -136,8 +150,13 @@ def update_question(form_data):
 def insert_answer(form_data):
     table = file_io.read_from_file(config.answers)
     mod_record = [form_data['modID'], str(int(time.time())), '0', form_data['questionID'],
-                  b64_convert(form_data['description'], decode=True), '']
+                  b64_convert(form_data['description'], decode=True)]
     mod_record[0] = str(int(table[len(table) - 1][0]) + 1) if table else 1
+    if image_upload(form_data, mod_record[0]):
+        image = b64_convert(str(mod_record[0]) + '_' + form_data['file-upload'], decode=True)
+    else:
+        image = ''
+    mod_record.append(image)
     table.append(mod_record)
 
     status = True if file_io.write_to_file(table, config.answers) else False
@@ -156,6 +175,19 @@ def update_answer(form_data):
     updated_table = sorted(updated_table, key=lambda x: int(x[0]))
 
     status = True if file_io.write_to_file(updated_table, config.answers) else False
+    return status
+
+
+def update_view_number(question_id):
+    table = file_io.read_from_file(config.questions)
+    to_be_updated = [line for line in table if int(question_id) == int(line[0])][0]
+    to_be_updated[2] = str(int(to_be_updated[2]) + 1)
+
+    updated_table = [line for line in table if int(question_id) != int(line[0])]
+    updated_table.append(to_be_updated)
+    updated_table = sorted(updated_table, key=lambda x: int(x[0]))
+
+    status = True if file_io.write_to_file(updated_table, config.questions) else False
     return status
 
 
@@ -186,7 +218,7 @@ def process_delete(id, questions=True):
             table_answers = file_io.read_from_file(config.answers)
             updated_answers = [line for line in table_answers if int(line[3]) != int(id)]
             status_answers = True if file_io.write_to_file(updated_answers, config.answers) else False
-            status = all(status, status_answers)
+            status = all([status, status_answers])
 
     return status
 
@@ -221,16 +253,20 @@ def process_votes(id, questions=True, direction='up'):
     return status
 
 
-def process_view_number():
-    pass
-
-
 def sort_table(table):
     pass
 
 
-def file_upload():
-    pass
+def image_upload(form_data, image_id):
+    status = False
+    image = request.files.get('file-upload')
+    if image:
+        extension = os.path.splitext(image.filename)
+        if extension[1] in ('.jpg', '.jpeg', '.gif', '.png', '.svg'):
+            filename = str(image_id) + "_" + image.filename
+            if image.save("static/uploads/" + filename):
+                status = True
+    return status
 
 
 def b64_convert(text, decode=False):

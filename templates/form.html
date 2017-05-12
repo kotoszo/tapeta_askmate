@@ -6,7 +6,7 @@ or theme == "answer" %} Answer {% else -%} Question {% endif %} {% endblock %} {
             <h1>{% if theme == "new-answer" %} Create an answer {% elif theme == "new-question" %} Create a question {% elif
                 theme == "answer" %} Edit an answer {% elif theme == "question" %} Edit a question {% endif %}
             </h1>
-            <form action="/" method="POST">
+            <form action="/" method="POST" enctype='multipart/form-data'>
                 <div>
                     <input type="hidden" id="modID" name="modID" value="{% if theme == 'question' %}{{ question['question'][0] }}{% elif theme == 'answer' %}{{ question['answers'][0][0] }}{% else %}-1{% endif %}"
                     />
