@@ -88,6 +88,10 @@ table.table-form a {
 span.glyphicon.glyphicon-pencil {
     padding-left: 25px;
 }
+
+#body-index span.glyphicon.glyphicon-pencil {
+    padding-left: 0px;
+}
 table {
     background: #fff;
 }
