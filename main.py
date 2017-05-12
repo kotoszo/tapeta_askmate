@@ -75,7 +75,7 @@ def vote(direction, question_id=None, answer_id=None):
         logic.process_votes(question_id, questions=True, direction=direction)
     elif answer_id:
         logic.process_votes(answer_id, questions=False, direction=direction)
-        question_id = get_question_by_answer_id(answer_id)['question'][0]
+        question_id = logic.get_question_by_answer_id(answer_id)['question'][0][0]
     return redirect(url_for('question', question_id=question_id))
 
 
